@@ -15,24 +15,34 @@ Public Class adminprofile
         Using connection As New SqlConnection(connectionstring)
             connection.Open()
 
-            ' Correct the query to fetch name and user_photo
-            Dim query As String = "SELECT name, user_photo FROM userdetails WHERE user_id = 107"
+            ' Query to fetch name and user_photo (stored as VARBINARY(MAX))
+            Dim query As String = "SELECT name, user_photo FROM userdetails WHERE user_id = 108"
 
             Using command As New SqlCommand(query, connection)
-                Using reader As SqlDataReader = command.ExecuteReader
+                Using reader As SqlDataReader = command.ExecuteReader()
+                    'If reader.Read() Then ' Ensure there's data to read
                     If reader.Read() Then ' Ensure there's data to read
-                        ' Display the user's name
-                        nametxtbox.Text = reader("name").ToString()
+                            ' Display the user's name
+                            nametxtbox.Text = reader("name").ToString()
+                            '' Display the user's name
+                            'photodisplay.Text = reader("name").ToString()
 
-                        ' Fetch and display the user's photo
-                        Dim photoPath As String = reader("user_photo").ToString()
+                            ' Fetch and display the user's photo
+                            If Not IsDBNull(reader("user_photo")) Then
+                            Dim imageData As Byte() = DirectCast(reader("user_photo"), Byte())
 
-                        If Not String.IsNullOrEmpty(photoPath) AndAlso File.Exists(photoPath) Then
-                            ' Load the image from the file path
-                            photodisplay.Image = Image.FromFile(photoPath)
-                            photodisplay.SizeMode = PictureBoxSizeMode.StretchImage
+                            If imageData.Length > 0 Then
+                                ' Convert byte array to image and display it
+                                Using ms As New MemoryStream(imageData)
+                                    photodisplay.Image = Image.FromStream(ms)
+                                    photodisplay.SizeMode = PictureBoxSizeMode.StretchImage
+                                End Using
+                            Else
+                                ' Set a placeholder image if no valid image exists
+                                photodisplay.Image = My.Resources.userphoto
+                            End If
                         Else
-                            ' Set a placeholder image if no photo exists or path is invalid
+                            ' Set a placeholder image if no photo is found in the database
                             photodisplay.Image = My.Resources.userphoto
                         End If
                     End If
@@ -40,6 +50,7 @@ Public Class adminprofile
             End Using
         End Using
     End Sub
+
 
 
     Private resizee As resizehelper
@@ -70,14 +81,19 @@ Public Class adminprofile
         nametxtbox.SelectionLength = 0
     End Sub
 
+
+    Public path As String
     Private Sub editphotobtn_Click(sender As Object, e As EventArgs) Handles editphotobtn.Click
         Me.ActiveControl = Nothing
         Using openFileDialog As New OpenFileDialog()
             openFileDialog.Filter = "Image Files|*.jpg;*.jpeg;*.png;*.gif"
             If openFileDialog.ShowDialog() = DialogResult.OK Then
                 Dim photoPath As String = openFileDialog.FileName
+                path = photoPath
+                ' Load the selected image into the PictureBox
                 photodisplay.Image = Image.FromFile(photoPath)
                 photodisplay.SizeMode = PictureBoxSizeMode.StretchImage ' Adjust the image size
+                confirmbtn.Show()
             End If
         End Using
     End Sub
@@ -97,35 +113,31 @@ Public Class adminprofile
     End Sub
 
     Private Sub confirmbtn_Click(sender As Object, e As EventArgs) Handles confirmbtn.Click
-        Dim Aname As String = nametxtbox.Text
-        Dim AphotoPath As String = "" ' Initialize variable to hold image path
-
-        ' Check if an image is selected and store the file path
-        If photodisplay.Image IsNot Nothing Then
-            ' Assuming you have the file path of the image saved somewhere, assign it to AphotoPath
-            ' For example, if you're allowing users to browse and select images:
-            AphotoPath = photodisplay.ImageLocation ' This assumes you're using ImageLocation to load images.
-        End If
-
         Try
+            Me.ActiveControl = Nothing
+            Dim Aname As String = nametxtbox.Text
+            Dim photopath As String = path
+            Dim photoData As Byte() = File.ReadAllBytes(photopath)
             Using connection As New SqlConnection(connectionstring)
                 connection.Open()
-                Dim query As String = "UPDATE userdetails SET name = @Aname, user_photo = @AphotoPath WHERE user_id = @userId"
+                Dim query As String = "UPDATE userdetails set name = @Aname, user_photo = @photoData where user_id = 108"
                 Using command As New SqlCommand(query, connection)
-                    ' Parameters for name and photo path
                     command.Parameters.AddWithValue("@Aname", Aname)
-                    command.Parameters.AddWithValue("@AphotoPath", AphotoPath) ' Store the file path, not the image binary
-                    command.Parameters.AddWithValue("@userId", 105) ' Assuming you're updating user ID 105
+                    command.Parameters.AddWithValue("@photoData", photoData) ' Use the byte array for the photo
 
                     ' Execute the update query
                     Dim rowsAffected As Integer = command.ExecuteNonQuery()
                     If rowsAffected > 0 Then
                         MessageBox.Show("Profile updated successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                        confirmbtn.Hide()
+                        Dim update As adminpanel = CType(Application.OpenForms("adminpanel"), adminpanel)
+                        update.showprofile()
                     Else
-                        MessageBox.Show("User not found or couldn't be updated.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                        MessageBox.Show("Profile couldn't be updated.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
                     End If
                 End Using
             End Using
+            'addproduct_Load(Me, EventArgs.Empty)
         Catch ex As Exception
             MessageBox.Show("An error occurred: " & ex.Message)
         End Try

@@ -71,6 +71,7 @@ Partial Class showproductdetail
         'backtoproduct
         '
         Me.backtoproduct.BackColor = System.Drawing.Color.Black
+        Me.backtoproduct.Cursor = System.Windows.Forms.Cursors.Hand
         Me.backtoproduct.FlatAppearance.BorderSize = 0
         Me.backtoproduct.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.backtoproduct.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))

@@ -18,24 +18,31 @@ Public Class adminpanel
         Using connection As New SqlConnection(connectionstring)
             connection.Open()
 
-            ' Correct the query to fetch name and user_photo
-            Dim query As String = "SELECT name, user_photo FROM userdetails WHERE user_id = 107"
+            ' Query to fetch name and user_photo (stored as VARBINARY(MAX))
+            Dim query As String = "SELECT name, user_photo FROM userdetails WHERE user_id = 108"
 
             Using command As New SqlCommand(query, connection)
-                Using reader As SqlDataReader = command.ExecuteReader
+                Using reader As SqlDataReader = command.ExecuteReader()
                     If reader.Read() Then ' Ensure there's data to read
                         ' Display the user's name
                         profilename.Text = reader("name").ToString()
 
                         ' Fetch and display the user's photo
-                        Dim photoPath As String = reader("user_photo").ToString()
+                        If Not IsDBNull(reader("user_photo")) Then
+                            Dim imageData As Byte() = DirectCast(reader("user_photo"), Byte())
 
-                        If Not String.IsNullOrEmpty(photoPath) AndAlso File.Exists(photoPath) Then
-                            ' Load the image from the file path
-                            profilephoto.Image = Image.FromFile(photoPath)
-                            profilephoto.SizeMode = PictureBoxSizeMode.StretchImage
+                            If imageData.Length > 0 Then
+                                ' Convert byte array to image and display it
+                                Using ms As New MemoryStream(imageData)
+                                    profilephoto.Image = Image.FromStream(ms)
+                                    profilephoto.SizeMode = PictureBoxSizeMode.StretchImage
+                                End Using
+                            Else
+                                ' Set a placeholder image if no valid image exists
+                                profilephoto.Image = My.Resources.userphoto
+                            End If
                         Else
-                            ' Set a placeholder image if no photo exists or path is invalid
+                            ' Set a placeholder image if no photo is found in the database
                             profilephoto.Image = My.Resources.userphoto
                         End If
                     End If
@@ -43,6 +50,7 @@ Public Class adminpanel
             End Using
         End Using
     End Sub
+
 
 
     Private Sub Button1_Click_1(sender As Object, e As EventArgs) Handles navslidebtn.Click

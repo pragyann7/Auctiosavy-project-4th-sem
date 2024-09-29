@@ -320,6 +320,7 @@ Partial Class addproduct
         'backviewproduct
         '
         Me.backviewproduct.BackColor = System.Drawing.Color.Black
+        Me.backviewproduct.Cursor = System.Windows.Forms.Cursors.Hand
         Me.backviewproduct.FlatAppearance.BorderSize = 0
         Me.backviewproduct.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.backviewproduct.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
