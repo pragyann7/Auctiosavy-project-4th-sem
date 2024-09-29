@@ -2,6 +2,8 @@
 Imports System.Windows.Forms.VisualStyles.VisualStyleElement
 Imports System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel
 Public Class SignUp
+    'hotspot
+    'Dim connectionstring As String = "Data Source=192.168.140.20;Initial Catalog=UsersDB;User ID=SA;Password=MyStrongPass123;"
     Dim connectionstring As String = "Data Source=192.168.1.69;Initial Catalog=UsersDB;User ID=SA;Password=MyStrongPass123;"
     Dim switchstate As Boolean = False
     Dim evalid As Boolean = True

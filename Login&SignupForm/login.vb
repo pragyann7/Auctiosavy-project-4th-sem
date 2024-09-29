@@ -2,6 +2,8 @@
 Imports Microsoft.Win32
 
 Public Class Login
+    'hotspot
+    'Dim connectionstring As String = "Data Source=192.168.140.20;Initial Catalog=UsersDB;User ID=SA;Password=MyStrongPass123;"
     Dim connectionstring As String = "Data Source=192.168.1.69;Initial Catalog=UsersDB;User ID=SA;Password=MyStrongPass123;"
     Private eemail As String
     Public Sub RememberLogin(username As String, role As String)
@@ -212,7 +214,7 @@ Public Class Login
     End Function
 
     Private Function GetUserRole(username As String) As String
-        Dim connectionstring As String = "Data Source=192.168.1.69;Initial Catalog=UsersDB;User ID=SA;Password=MyStrongPass123;"
+        'Dim connectionstring As String = "Data Source=192.168.1.69;Initial Catalog=UsersDB;User ID=SA;Password=MyStrongPass123;"
         Using conn As New SqlConnection(connectionstring)
             conn.Open()
 

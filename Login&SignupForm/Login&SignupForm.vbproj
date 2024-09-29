@@ -101,10 +101,34 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="addproduct.Designer.vb">
+      <DependentUpon>addproduct.vb</DependentUpon>
+    </Compile>
+    <Compile Include="addproduct.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AddproductWview.Designer.vb">
+      <DependentUpon>AddproductWview.vb</DependentUpon>
+    </Compile>
+    <Compile Include="AddproductWview.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="adminpanel.Designer.vb">
       <DependentUpon>adminpanel.vb</DependentUpon>
     </Compile>
     <Compile Include="adminpanel.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="adminprofile.Designer.vb">
+      <DependentUpon>adminprofile.vb</DependentUpon>
+    </Compile>
+    <Compile Include="adminprofile.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="auctionmanage.Designer.vb">
+      <DependentUpon>auctionmanage.vb</DependentUpon>
+    </Compile>
+    <Compile Include="auctionmanage.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="login.vb">
@@ -130,10 +154,17 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Compile Include="resizehelper.vb" />
     <Compile Include="screensplash.Designer.vb">
       <DependentUpon>screensplash.vb</DependentUpon>
     </Compile>
     <Compile Include="screensplash.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="showproductdetail.Designer.vb">
+      <DependentUpon>showproductdetail.vb</DependentUpon>
+    </Compile>
+    <Compile Include="showproductdetail.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="signup.Designer.vb">
@@ -142,16 +173,40 @@
     <Compile Include="signup.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Updateproduct.Designer.vb">
+      <DependentUpon>Updateproduct.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Updateproduct.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="userpanel.Designer.vb">
       <DependentUpon>userpanel.vb</DependentUpon>
     </Compile>
     <Compile Include="userpanel.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="usersmanage.Designer.vb">
+      <DependentUpon>usersmanage.vb</DependentUpon>
+    </Compile>
+    <Compile Include="usersmanage.vb">
+      <SubType>Form</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="addproduct.resx">
+      <DependentUpon>addproduct.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AddproductWview.resx">
+      <DependentUpon>AddproductWview.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="adminpanel.resx">
       <DependentUpon>adminpanel.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="adminprofile.resx">
+      <DependentUpon>adminprofile.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="auctionmanage.resx">
+      <DependentUpon>auctionmanage.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="login.resx">
       <DependentUpon>login.vb</DependentUpon>
@@ -165,11 +220,20 @@
     <EmbeddedResource Include="screensplash.resx">
       <DependentUpon>screensplash.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="showproductdetail.resx">
+      <DependentUpon>showproductdetail.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="signup.resx">
       <DependentUpon>signup.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Updateproduct.resx">
+      <DependentUpon>Updateproduct.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="userpanel.resx">
       <DependentUpon>userpanel.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="usersmanage.resx">
+      <DependentUpon>usersmanage.vb</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
@@ -295,6 +359,48 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\minimizeplain.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\closenav.png" />
+    <None Include="Resources\usersmanage.png" />
+    <None Include="Resources\users1.png" />
+    <None Include="Resources\userphoto.png" />
+    <None Include="Resources\usermanage.png" />
+    <None Include="Resources\usericon.png" />
+    <None Include="Resources\usercontrol.png" />
+    <None Include="Resources\Spinner-5.gif" />
+    <None Include="Resources\settingiso100.png" />
+    <None Include="Resources\setting100.png" />
+    <None Include="Resources\setting.png" />
+    <None Include="Resources\search.png" />
+    <None Include="Resources\rupee.png" />
+    <None Include="Resources\product1.png" />
+    <None Include="Resources\product.png" />
+    <None Include="Resources\output-onlinepngtools.png" />
+    <None Include="Resources\nophoto.jpg" />
+    <None Include="Resources\menuu.png" />
+    <None Include="Resources\menu64.png" />
+    <None Include="Resources\manageauction.png" />
+    <None Include="Resources\manageauc.png" />
+    <None Include="Resources\manage.png" />
+    <None Include="Resources\logout.png" />
+    <None Include="Resources\image.png" />
+    <None Include="Resources\home2.png" />
+    <None Include="Resources\home1.png" />
+    <None Include="Resources\home.png" />
+    <None Include="Resources\dash-board.png" />
+    <None Include="Resources\dashboard.png" />
+    <None Include="Resources\close100.png" />
+    <None Include="Resources\Circles-menu-3.gif" />
+    <None Include="Resources\browse.png" />
+    <None Include="Resources\addproduct.png" />
+    <None Include="Resources\add-image.png" />
+    <None Include="Resources\addd.png" />
+    <None Include="Resources\add.png" />
+    <None Include="Resources\editprofile.png" />
+    <None Include="Resources\edit.png" />
+    <None Include="Resources\greaterthan.png" />
+    <Content Include="TextFile1.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
 </Project>
