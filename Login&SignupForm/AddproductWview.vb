@@ -3,8 +3,6 @@ Imports System.IO
 Imports System.Timers
 
 Public Class AddproductWview
-    'hotspot
-    'Dim connectionString As String = "Data Source=192.168.140.20;Initial Catalog=UsersDB;Persist Security Info=True;User ID=SA;Password=MyStrongPass123"
     Dim connectionString As String = "Data Source=192.168.1.69;Initial Catalog=UsersDB;User ID=SA;Password=MyStrongPass123;"
     Private WithEvents productTimer As New System.Timers.Timer(5000)
     Private products As New List(Of Product)()
@@ -49,7 +47,7 @@ Public Class AddproductWview
                         Dim productName As String = reader("item_name").ToString()
                         Dim price As Decimal = reader("starting_price")
                         Dim category As String = reader("category").ToString()
-                        Dim productPhoto() As Byte = If(IsDBNull(reader("item_photo_path")), Nothing, DirectCast(reader("item_photo_path"), Byte()))
+                        Dim productPhoto As String = If(IsDBNull(reader("item_photo_path")), Nothing, reader("item_photo_path").ToString())
 
                         products.Add(New Product(productId, productName, price, productPhoto, category))
                     End While
@@ -78,6 +76,7 @@ Public Class AddproductWview
                 .BorderStyle = BorderStyle.FixedSingle,
                 .Margin = New Padding(10)
             }
+
             ' Add hover effect to the panel
             AddHandler productPanel.MouseEnter, AddressOf SharedHoverEffect_MouseEnter
             AddHandler productPanel.MouseLeave, AddressOf SharedHoverEffect_MouseLeave
@@ -89,10 +88,9 @@ Public Class AddproductWview
             AddHandler picProductPhoto.MouseEnter, AddressOf SharedHoverEffect_MouseEnter
             AddHandler picProductPhoto.MouseLeave, AddressOf SharedHoverEffect_MouseLeave
 
-            If product.Photo IsNot Nothing Then
-                Using ms As New MemoryStream(product.Photo)
-                    picProductPhoto.Image = Image.FromStream(ms)
-                End Using
+            ' Load image from the path
+            If Not String.IsNullOrEmpty(product.Photo) Then
+                picProductPhoto.Image = Image.FromFile(product.Photo) ' Assuming the photo path is valid
             Else
                 picProductPhoto.Image = My.Resources.nophoto ' Placeholder image
             End If
@@ -137,7 +135,6 @@ Public Class AddproductWview
         parentPanel.BackColor = Color.FromArgb(237, 237, 237)
         parentPanel.BorderStyle = BorderStyle.Fixed3D
         parentPanel.Cursor = Cursors.Hand
-
     End Sub
 
     ' Shared MouseLeave event for both panel and picturebox
@@ -155,7 +152,6 @@ Public Class AddproductWview
         parentPanel.BackColor = Color.White
         parentPanel.BorderStyle = BorderStyle.FixedSingle
         parentPanel.Cursor = Cursors.Default
-
     End Sub
 
     Private Sub AuctionPanel_Resize(sender As Object, e As EventArgs) Handles MyBase.Resize
@@ -175,7 +171,6 @@ Public Class AddproductWview
         flowLayoutPanelProducts.PerformLayout()
     End Sub
 
-
     Private resizee As resizehelper
 
     Public Sub New()
@@ -193,6 +188,7 @@ Public Class AddproductWview
 
         AddHandler Me.Resize, AddressOf AddproductWview_Resize
     End Sub
+
     Private Sub AddproductWview_Resize(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
         resizee.HandleResize(Me)
     End Sub
@@ -222,12 +218,10 @@ Public Class AddproductWview
         LoadProductsIntoFlowLayoutPanel(selectedCategory, searchbox.Text, sortsearch.SelectedItem?.ToString())
     End Sub
 
-
-    Private Sub addproductbtn_Click_1(sender As Object, e As EventArgs) Handles addproductbtn.Click
+    Private Sub addproductbtn_Click(sender As Object, e As EventArgs) Handles addproductbtn.Click
         displayproductpanel.Visible = False
         showform(addproduct)
     End Sub
-
     ' Method to display forms in a panel
     Sub showform(ByVal panel As Form)
         addproductpanel.Controls.Clear()
@@ -238,15 +232,14 @@ Public Class AddproductWview
     End Sub
 End Class
 
-' Product class to hold product data
 Public Class Product
     Public Property Id As String
     Public Property Name As String
     Public Property Price As Decimal
-    Public Property Photo() As Byte()
+    Public Property Photo As String ' Change from Byte() to String
     Public Property Category As String
 
-    Public Sub New(id As String, name As String, price As Decimal, photo() As Byte, category As String)
+    Public Sub New(id As String, name As String, price As Decimal, photo As String, category As String)
         Me.Id = id
         Me.Name = name
         Me.Price = price

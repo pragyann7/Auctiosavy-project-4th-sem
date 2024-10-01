@@ -94,7 +94,9 @@ Public Class addproduct
         Me.ActiveControl = Nothing
     End Sub
 
-
+    'Private Sub Pidtxtbox_Enter(sender As Object, e As EventArgs) Handles Pidtxtbox.Enter
+    '    Me.ActiveControl = Nothing
+    'End Sub
 
     Private Sub photoselectbtn_Click(sender As Object, e As EventArgs) Handles photoselectbtn.Click
         Me.ActiveControl = Nothing
@@ -118,39 +120,34 @@ Public Class addproduct
         End Using
     End Sub
 
-    'Private Sub Pidtxtbox_Enter(sender As Object, e As EventArgs) Handles Pidtxtbox.Enter
-    '    Me.ActiveControl = Nothing
-    'End Sub
-
     Private Sub addproductbtn_Click(sender As Object, e As EventArgs) Handles addproductbtn.Click
         Dim currentDateTime As DateTime = DateTime.Now
         If Pnametxtbox.Text = "Product Name" OrElse
-            Pidtxtbox.Text = "" OrElse
-            Ppricetxtbox.Text = "Price" OrElse
-            categorycombobx.SelectedIndex = -1 Then
+        Pidtxtbox.Text = "" OrElse
+        Ppricetxtbox.Text = "Price" OrElse
+        categorycombobx.SelectedIndex = -1 Then
             MessageBox.Show("Please fill in all the fields.", "Input Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
         Else
             Try
                 Me.ActiveControl = Nothing
                 Dim itemId As String = Pidtxtbox.Text
                 Dim itemName As String = Pnametxtbox.Text
-                Dim productID As String = Pidtxtbox.Text
                 Dim description As String = descriptiontxtbox.Text
-                Dim startingprice As String = Ppricetxtbox.Text
-                Dim category As String = categorycombobx.SelectedItem
+                Dim startingprice As Decimal = Decimal.Parse(Ppricetxtbox.Text) ' Ensure it's a decimal
+                Dim category As String = categorycombobx.SelectedItem.ToString() ' Ensure it's a string
                 Dim startTime As DateTime = starttimepicker.Value
                 Dim endTime As DateTime = endtimepicker.Value
-                Dim photopath As String = pathname.Text
-                Dim photoData As Byte() = File.ReadAllBytes(photopath)
+                Dim photoPath As String = pathname.Text ' Get the photo path
+
                 Using connection As New SqlConnection(connectionString)
                     Dim command As New SqlCommand("INSERT INTO AuctionItems (item_id, item_name, item_photo_path, description, category, starting_price, start_time, end_time, current_bid, status) VALUES (@item_id, @item_name, @item_photo_path, @description, @category, @starting_price, @start_time, @end_time, NULL, 'pending')", connection)
 
                     command.Parameters.AddWithValue("@item_id", itemId)
                     command.Parameters.AddWithValue("@item_name", itemName)
-                    command.Parameters.AddWithValue("@item_photo_path", photoData) ' Use the byte array for the photo
+                    command.Parameters.AddWithValue("@item_photo_path", photoPath) ' Use the file path for the photo
                     command.Parameters.AddWithValue("@description", description)
                     command.Parameters.AddWithValue("@category", category)
-                    command.Parameters.AddWithValue("@starting_price", startingprice)
+                    command.Parameters.AddWithValue("@starting_price", startingprice) ' Make sure it's a decimal
                     command.Parameters.AddWithValue("@start_time", startTime)
                     command.Parameters.AddWithValue("@end_time", endTime)
 
@@ -165,6 +162,7 @@ Public Class addproduct
             End Try
         End If
     End Sub
+
     Private Sub Pidgeneratebtn_Click(sender As Object, e As EventArgs) Handles Pidgeneratebtn.Click
         Me.ActiveControl = Nothing
         Dim uniqueID As String = GenerateUniqueItemID()

@@ -179,13 +179,18 @@ Public Class Login
             MessageBox.Show("Please fill in all the fields.", "Input Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
         ElseIf AuthenticateUser(username, password) Then
             Dim role As String = GetUserRole(username)
+            Dim userid As String = GetUserid(username)
+            LoggedInUserID = userid
 
             RememberLogin(username, role)
 
             If role = "admin" Then
                 adminpanel.Show()
             ElseIf role = "user" Then
-                userpanel.Show()
+                'userproduct.Show()
+                ''userpanel.Show()
+                Dim userPanelForm As New userproduct(username) ' Pass username to the userpanel form
+                userPanelForm.Show()
             End If
 
             Me.Hide()
@@ -193,6 +198,17 @@ Public Class Login
             MessageBox.Show("Invalid username or password!")
         End If
     End Sub
+    Private Function GetUserid(username As String)
+        Using conn As New SqlConnection(connectionstring)
+            conn.Open()
+
+            Dim query As String = "SELECT user_id FROM userdetails WHERE username = @username"
+            Dim cmd As New SqlCommand(query, conn)
+            cmd.Parameters.AddWithValue("@username", username)
+
+            Return Convert.ToString(cmd.ExecuteScalar())
+        End Using
+    End Function
 
     Private Function AuthenticateUser(username As String, password As String) As Boolean
         Using conn As New SqlConnection(connectionstring)

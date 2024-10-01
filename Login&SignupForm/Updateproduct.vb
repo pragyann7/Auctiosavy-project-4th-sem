@@ -19,29 +19,32 @@ Public Class Updateproduct
         Using connection As New SqlConnection(connectionString)
             Try
                 connection.Open()
-                Dim query As String = "SELECT item_name, item_photo_path, description, starting_price, category, start_time, end_time, status from AuctionItems where item_id = @productId"
+                Dim query As String = "SELECT item_name, item_photo_path, description, starting_price, category, start_time, end_time, status FROM AuctionItems WHERE item_id = @productId"
                 Using cmd As New SqlCommand(query, connection)
                     cmd.Parameters.AddWithValue("@productId", productId)
                     Using reader As SqlDataReader = cmd.ExecuteReader
                         If reader.Read() Then
-                            Pnametxtbox.Text = reader("item_name").ToString
-                            descriptiontxtbox.Text = reader("description").ToString
-                            Ppricetxtbox.Text = reader("starting_price").ToString
+                            ' Assigning values to the controls
+                            Pnametxtbox.Text = reader("item_name").ToString()
+                            descriptiontxtbox.Text = reader("description").ToString()
+                            Ppricetxtbox.Text = reader("starting_price").ToString()
                             Pidtxtbox.Text = productId
-                            'for reading datetime
+
+                            ' Handling DateTime fields
                             Dim startTime As DateTime = If(IsDBNull(reader("start_time")), DateTime.MinValue, DirectCast(reader("start_time"), DateTime))
                             Dim endTime As DateTime = If(IsDBNull(reader("end_time")), DateTime.MinValue, DirectCast(reader("end_time"), DateTime))
-                            Dim photoData As Byte() = If(IsDBNull(reader("item_photo_path")), Nothing, DirectCast(reader("item_photo_path"), Byte()))
                             starttimepicker.Text = startTime.ToString("G")
                             endtimepicker.Text = endTime.ToString("G")
 
-                            If photoData IsNot Nothing Then
-                                Using ms As New MemoryStream(photoData)
-                                    productimage.Image = Image.FromStream(ms) ' Assuming picProductPhoto is your PictureBox
-                                    productimage.SizeMode = PictureBoxSizeMode.StretchImage
-                                End Using
+                            ' Handling image path (VARCHAR)
+                            Dim photoPath As String = If(IsDBNull(reader("item_photo_path")), Nothing, reader("item_photo_path").ToString())
+                            pathname.Text = photoPath
+                            ' Check if the photo path is valid and file exists
+                            If Not String.IsNullOrEmpty(photoPath) AndAlso File.Exists(photoPath) Then
+                                productimage.Image = Image.FromFile(photoPath) ' Load image from file path
+                                productimage.SizeMode = PictureBoxSizeMode.StretchImage
                             Else
-                                productimage.Image = My.Resources.userphoto ' Set a placeholder image if no photo exists
+                                productimage.Image = My.Resources.userphoto ' Set a placeholder image if no valid photo path exists
                             End If
                         End If
                     End Using
@@ -51,6 +54,7 @@ Public Class Updateproduct
             End Try
         End Using
     End Sub
+
 
     Public Sub New()
         InitializeComponent()
@@ -141,24 +145,24 @@ Public Class Updateproduct
             Dim category As String = categorycombobx.SelectedItem
             Dim startTime As DateTime = starttimepicker.Value
             Dim endTime As DateTime = endtimepicker.Value
-            Dim photopath As String = pathname.Text
-            Dim photoData As Byte() = File.ReadAllBytes(photopath)
+            Dim photopath As String = pathname.Text ' Get the file path
+
             Using connection As New SqlConnection(connectionString)
                 connection.Open()
                 Dim query As String = "UPDATE AuctionItems 
-                                   SET item_name = @item_name, 
-                                       description = @description, 
-                                       starting_price = @price, 
-                                       category = @category, 
-                                       start_time = @start_time, 
-                                       end_time = @end_time, 
-                                       item_photo_path = @item_photo_path
-                                   WHERE item_id = @productId"
+                               SET item_name = @item_name, 
+                                   description = @description, 
+                                   starting_price = @price, 
+                                   category = @category, 
+                                   start_time = @start_time, 
+                                   end_time = @end_time, 
+                                   item_photo_path = @item_photo_path
+                               WHERE item_id = @productId"
                 Using command As New SqlCommand(query, connection)
 
-                    command.Parameters.AddWithValue("@productId", productId)
+                    command.Parameters.AddWithValue("@productId", itemId) ' Changed from productId to itemId
                     command.Parameters.AddWithValue("@item_name", itemName)
-                    command.Parameters.AddWithValue("@item_photo_path", photoData) ' Use the byte array for the photo
+                    command.Parameters.AddWithValue("@item_photo_path", photopath) ' Store the path as a string
                     command.Parameters.AddWithValue("@description", description)
                     command.Parameters.AddWithValue("@category", category)
                     command.Parameters.AddWithValue("@price", startingprice)
@@ -174,11 +178,11 @@ Public Class Updateproduct
                     End If
                 End Using
             End Using
-            'addproduct_Load(Me, EventArgs.Empty)
         Catch ex As Exception
             MessageBox.Show("An error occurred: " & ex.Message)
         End Try
     End Sub
+
 
     Private Sub cancelbtn_Click(sender As Object, e As EventArgs) Handles cancelbtn.Click
         Dim cancel As adminpanel = CType(Application.OpenForms("adminpanel"), adminpanel)

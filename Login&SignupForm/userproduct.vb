@@ -2,7 +2,16 @@
 Imports System.IO
 Imports System.Timers
 Imports System.Windows.Forms.VisualStyles.VisualStyleElement
-Public Class auctionmanage
+Public Class userproduct
+    Private loggedInUsername As String
+    Private userId As String
+
+    ' Constructor to accept username
+    Public Sub New(username As String)
+        InitializeComponent()
+        loggedInUsername = username
+    End Sub
+
     'hotspot
     'Dim connectionString As String = "Data Source=192.168.140.20;Initial Catalog=UsersDB;Persist Security Info=True;User ID=SA;Password=MyStrongPass123"
     Dim connectionstring As String = "Data Source=192.168.1.69;Initial Catalog=UsersDB;User ID=SA;Password=MyStrongPass123;"
@@ -13,6 +22,67 @@ Public Class auctionmanage
         ' Load products into the FlowLayoutPanel when the form loads
         LoadProductsIntoFlowLayoutPanel()
         productTimer.Start()
+        'UpdateAuctionStatus()
+        AuctionStatusTimer.Interval = 5000
+        AuctionStatusTimer.Start()
+    End Sub
+    ' This event will be triggered every time the timer ticks
+    Private Sub AuctionStatusTimer_Tick(sender As Object, e As EventArgs) Handles AuctionStatusTimer.Tick
+        Console.WriteLine("Timer ticked at: " & DateTime.Now.ToString())
+        UpdateAuctionStatus()
+        InsertWinners()
+    End Sub
+    Sub InsertWinners()
+        ' Define your connection string
+        Dim connectionString As String = "Data Source=192.168.1.69;Initial Catalog=UsersDB;Persist Security Info=True;User ID=SA;Password=MyStrongPass123"
+
+        Using connection As New SqlConnection(connectionString)
+            connection.Open()
+
+            ' SQL command to insert winners, avoiding duplicates and handling no bids
+            Dim sql As String = "
+            INSERT INTO Winners (item_id, user_id, winning_bid, winning_time)
+            SELECT 
+                a.item_id,
+                b.user_id,
+                b.bid_amount,
+                GETDATE()
+            FROM 
+                AuctionItems a
+            JOIN 
+                Bids b ON a.item_id = b.item_id
+            WHERE 
+                a.end_time <= GETDATE()  -- Auction has ended
+            AND 
+                b.bid_amount = (
+                    SELECT MAX(bid_amount)
+                    FROM Bids
+                    WHERE item_id = a.item_id
+                )
+            AND 
+                NOT EXISTS (  -- Prevent duplicates
+                    SELECT 1 
+                    FROM Winners w
+                    WHERE w.item_id = a.item_id
+                );"
+
+            ' Create a SQL command
+            Using command As New SqlCommand(sql, connection)
+                Try
+                    ' Execute the command
+                    Dim rowsAffected As Integer = command.ExecuteNonQuery()
+                    Console.WriteLine($"{rowsAffected} winner(s) inserted.")
+                Catch ex As Exception
+                    Console.WriteLine("An error occurred: " & ex.Message)
+                End Try
+            End Using
+        End Using
+    End Sub
+
+
+    ' Optionally stop the timer when closing the form
+    Private Sub MainForm_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
+        AuctionStatusTimer.Stop()
     End Sub
 
     Public Sub LoadProductsIntoFlowLayoutPanel()
@@ -156,7 +226,7 @@ Public Class auctionmanage
             Dim productId As String = lblProductId.Text.Replace("ID: ", "").Trim()
 
             ' Open the AuctionPage for the clicked product
-            Dim auctionPage As New showproductdetail(productId)
+            Dim auctionPage As New bidproduct(productId)
             'Dim form2 As adminpanel = CType(Application.OpenForms("adminpanel"), adminpanel)
             'form2.foraddproduct.Controls.Clear()
             'form2.showform(auctionPage)
@@ -166,7 +236,7 @@ Public Class auctionmanage
         End If
     End Sub
     Sub help(productId As String)
-        Dim auctionPage As New showproductdetail(productId)
+        Dim auctionPage As New bidproduct(productId)
         showform(auctionPage)
 
     End Sub
@@ -242,9 +312,8 @@ Public Class auctionmanage
 
         AddHandler Me.Resize, AddressOf AddproductWview_Resize
     End Sub
-    Private Sub AddproductWview_Resize(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
+    Private Sub AddproductWview_Resize(ByVal sender As Object, ByVal e As EventArgs)
         resizee.HandleResize(Me)
     End Sub
-
 End Class
 

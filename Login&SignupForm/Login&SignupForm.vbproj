@@ -131,6 +131,13 @@
     <Compile Include="auctionmanage.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="AuctionStatusModule.vb" />
+    <Compile Include="bidproduct.Designer.vb">
+      <DependentUpon>bidproduct.vb</DependentUpon>
+    </Compile>
+    <Compile Include="bidproduct.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="login.vb">
       <SubType>Form</SubType>
     </Compile>
@@ -155,6 +162,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Compile Include="resizehelper.vb" />
+    <Compile Include="saveUserId.vb" />
     <Compile Include="screensplash.Designer.vb">
       <DependentUpon>screensplash.vb</DependentUpon>
     </Compile>
@@ -185,6 +193,12 @@
     <Compile Include="userpanel.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="userproduct.Designer.vb">
+      <DependentUpon>userproduct.vb</DependentUpon>
+    </Compile>
+    <Compile Include="userproduct.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="usersmanage.Designer.vb">
       <DependentUpon>usersmanage.vb</DependentUpon>
     </Compile>
@@ -207,6 +221,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="auctionmanage.resx">
       <DependentUpon>auctionmanage.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="bidproduct.resx">
+      <DependentUpon>bidproduct.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="login.resx">
       <DependentUpon>login.vb</DependentUpon>
@@ -231,6 +248,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="userpanel.resx">
       <DependentUpon>userpanel.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="userproduct.resx">
+      <DependentUpon>userproduct.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="usersmanage.resx">
       <DependentUpon>usersmanage.vb</DependentUpon>

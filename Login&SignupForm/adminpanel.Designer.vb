@@ -184,7 +184,7 @@ Partial Class adminpanel
         '
         'profilephoto
         '
-        Me.profilephoto.BackColor = System.Drawing.Color.Gainsboro
+        Me.profilephoto.BackColor = System.Drawing.Color.FromArgb(CType(CType(93, Byte), Integer), CType(CType(140, Byte), Integer), CType(CType(116, Byte), Integer))
         Me.profilephoto.Cursor = System.Windows.Forms.Cursors.Hand
         Me.profilephoto.Image = Global.Login_SignupForm.My.Resources.Resources.userphoto
         Me.profilephoto.Location = New System.Drawing.Point(86, 44)
@@ -254,7 +254,7 @@ Partial Class adminpanel
         '
         'foraddproduct
         '
-        Me.foraddproduct.Location = New System.Drawing.Point(77, 1)
+        Me.foraddproduct.Location = New System.Drawing.Point(77, 0)
         Me.foraddproduct.Name = "foraddproduct"
         Me.foraddproduct.Size = New System.Drawing.Size(1035, 681)
         Me.foraddproduct.TabIndex = 3

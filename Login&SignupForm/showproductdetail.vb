@@ -8,16 +8,6 @@ Public Class showproductdetail
     'hotspot
     'Dim connectionString As String = "Data Source=192.168.140.20;Initial Catalog=UsersDB;Persist Security Info=True;User ID=SA;Password=MyStrongPass123"
     Dim connectionString As String = "Data Source=192.168.1.69;Initial Catalog=UsersDB;Persist Security Info=True;User ID=SA;Password=MyStrongPass123"
-
-
-    '' Constructor that accepts productId
-    'Public Sub New(id As String)
-    '    InitializeComponent()
-    '    productId = id
-    '    'LoadProductDetails()
-    'End Sub
-
-    ' Constructor that accepts productId
     Public Sub New(id As String)
         ' Call the parameterless constructor to initialize the resizehelper
         Me.New()
@@ -30,38 +20,41 @@ Public Class showproductdetail
     Private Sub LoadProductDetails()
         Using connection As New SqlConnection(connectionString)
             connection.Open()
-            Dim query As String = "SELECT item_name, item_photo_path, description, starting_price, start_time, end_time, status from AuctionItems where item_id = @productId"
+            Dim query As String = "SELECT item_name, item_photo_path, description, starting_price, start_time, end_time, status FROM AuctionItems WHERE item_id = @productId"
             Using cmd As New SqlCommand(query, connection)
                 cmd.Parameters.AddWithValue("@productId", productId)
                 Using reader As SqlDataReader = cmd.ExecuteReader
                     If reader.Read() Then
-                        productnamelbl.Text = reader("item_name").ToString
-                        descriptiontxtbox.Text = reader("description").ToString
-                        startingprice.Text = reader("starting_price").ToString
+                        ' Reading product details
+                        productnamelbl.Text = reader("item_name").ToString()
+                        descriptiontxtbox.Text = reader("description").ToString()
+                        startingprice.Text = reader("starting_price").ToString()
                         productidlbl.Text = productId
-                        'for reading datetime
+
+                        ' Reading datetime fields
                         Dim startTime As DateTime = If(IsDBNull(reader("start_time")), DateTime.MinValue, DirectCast(reader("start_time"), DateTime))
                         Dim endTime As DateTime = If(IsDBNull(reader("end_time")), DateTime.MinValue, DirectCast(reader("end_time"), DateTime))
-                        Dim photoData As Byte() = If(IsDBNull(reader("item_photo_path")), Nothing, DirectCast(reader("item_photo_path"), Byte()))
-                        CstartTime = reader("start_time")
-                        CendTime = reader("end_time")
+                        CstartTime = startTime
+                        CendTime = endTime
                         Astartingtimelbl.Text = startTime.ToString("G")
                         Aendingtimelbl.Text = endTime.ToString("G")
-                        statuslbl.Text = reader("status").ToString
+                        statuslbl.Text = reader("status").ToString()
 
-                        If photoData IsNot Nothing Then
-                            Using ms As New MemoryStream(photoData)
-                                productimg.Image = Image.FromStream(ms) ' Assuming picProductPhoto is your PictureBox
-                                productimg.SizeMode = PictureBoxSizeMode.StretchImage
-                            End Using
+                        ' Reading the image path (VARCHAR)
+                        Dim photoPath As String = If(IsDBNull(reader("item_photo_path")), Nothing, reader("item_photo_path").ToString())
+
+                        If Not String.IsNullOrEmpty(photoPath) AndAlso File.Exists(photoPath) Then
+                            productimg.Image = Image.FromFile(photoPath) ' Load image from file path
+                            productimg.SizeMode = PictureBoxSizeMode.StretchImage
                         Else
-                            productimg.Image = My.Resources.userphoto ' Set a placeholder image if no photo exists
+                            productimg.Image = My.Resources.userphoto ' Set a placeholder image if no valid photo path exists
                         End If
                     End If
                 End Using
             End Using
         End Using
     End Sub
+
 
     Private resizee As resizehelper
     Public Sub New()
@@ -87,9 +80,9 @@ Public Class showproductdetail
         resizee.AddControl(Aendingtimelbl)
         resizee.AddControl(livebidshow)
         resizee.AddControl(pdbidlbl)
-        resizee.AddControl(user1)
-        resizee.AddControl(user2)
-        resizee.AddControl(user3)
+        resizee.AddControl(ListView1)
+        resizee.AddControl(TableLayoutPanel1)
+        'resizee.AddControl(user3)
         resizee.AddControl(Panel1)
         resizee.AddControl(Label1)
         resizee.AddControl(Label3)
@@ -108,6 +101,13 @@ Public Class showproductdetail
         ' Start the timer to update the countdown every second
         timerCountdown.Interval = 1000 ' 1 second
         timerCountdown.Start()
+        ' Initialize the live bids display when the form loads
+        LoadLiveBids(productId) ' Replace with the actual item ID
+        SetupTimer() ' Start the auto-refresh timer
+        ListView1.View = View.Details
+        ListView1.Columns.Add("Bidder", 100) ' Column for Anonymous name
+        ListView1.Columns.Add("Bid Amount", 100) ' Column for Bid Amount
+        ListView1.Columns.Add("Time", 150) ' Column for Bid Time
     End Sub
 
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
@@ -175,5 +175,69 @@ Public Class showproductdetail
 
     Private Sub descriptiontxtbox_Click(sender As Object, e As EventArgs) Handles descriptiontxtbox.Click
         Me.ActiveControl = Nothing
+    End Sub
+
+    Private Sub LoadLiveBids(productId As String)
+        ' Define the connection string to your database
+        'Dim connectionString As String = "your_connection_string_here"
+
+        ' SQL query to fetch live bids for a specific auction item along with the username
+        Dim query As String = "
+        SELECT 
+    u.name AS UserName, 
+    b.bid_amount AS BidAmount, 
+    b.bid_time AS BidTime 
+FROM 
+    Bids b
+JOIN 
+    UserDetails u ON b.user_id = u.user_id
+WHERE 
+    b.item_id = @item_id
+ORDER BY 
+    b.bid_time ASC;
+    "
+
+        ' Clear the ListView before loading new bids
+        ListView1.Items.Clear()
+
+        ' Using block to handle database connections
+        Using connection As New SqlConnection(connectionString)
+            connection.Open()
+
+            ' Create a data adapter to fetch the results
+            Using adapter As New SqlDataAdapter(query, connection)
+                ' Add the item_id parameter to filter by auction item
+                adapter.SelectCommand.Parameters.AddWithValue("@item_id", productId)
+
+                ' Create a DataTable to hold the result
+                Dim bidsTable As New DataTable()
+
+                ' Fill the DataTable with the query result
+                adapter.Fill(bidsTable)
+
+                ' Populate the ListView with data
+                For Each row As DataRow In bidsTable.Rows
+                    ' Create a new ListViewItem with the actual username
+                    Dim listViewItem As New ListViewItem(row("Username").ToString()) ' Set the username
+                    listViewItem.SubItems.Add(Convert.ToDecimal(row("BidAmount")).ToString("C2")) ' Format as currency
+                    listViewItem.SubItems.Add(Convert.ToDateTime(row("BidTime")).ToString()) ' Add bid time
+
+                    ' Add the ListViewItem to the ListView
+                    ListView1.Items.Add(listViewItem)
+                Next
+            End Using
+        End Using
+    End Sub
+
+
+    Private Sub SetupTimer()
+        Dim refreshTimer As New Timer()
+        refreshTimer.Interval = 5000 ' Set interval to 5 seconds
+        AddHandler refreshTimer.Tick, AddressOf RefreshLiveBids
+        refreshTimer.Start()
+    End Sub
+
+    Private Sub RefreshLiveBids(sender As Object, e As EventArgs)
+        LoadLiveBids(productId) ' Replace with your current item ID logic
     End Sub
 End Class

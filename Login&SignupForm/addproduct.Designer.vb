@@ -89,20 +89,26 @@ Partial Class addproduct
         '
         'endtimepicker
         '
+        Me.endtimepicker.Checked = False
         Me.endtimepicker.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.endtimepicker.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.endtimepicker.CustomFormat = "yyyy-MM-dd HH:mm:ss"
+        Me.endtimepicker.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.endtimepicker.Format = System.Windows.Forms.DateTimePickerFormat.Custom
         Me.endtimepicker.Location = New System.Drawing.Point(439, 510)
         Me.endtimepicker.Name = "endtimepicker"
-        Me.endtimepicker.Size = New System.Drawing.Size(209, 21)
+        Me.endtimepicker.Size = New System.Drawing.Size(209, 29)
         Me.endtimepicker.TabIndex = 75
         '
         'starttimepicker
         '
+        Me.starttimepicker.Checked = False
         Me.starttimepicker.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.starttimepicker.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.starttimepicker.CustomFormat = "yyyy-MM-dd HH:mm:ss"
+        Me.starttimepicker.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.starttimepicker.Format = System.Windows.Forms.DateTimePickerFormat.Custom
         Me.starttimepicker.Location = New System.Drawing.Point(116, 510)
         Me.starttimepicker.Name = "starttimepicker"
-        Me.starttimepicker.Size = New System.Drawing.Size(209, 21)
+        Me.starttimepicker.Size = New System.Drawing.Size(209, 29)
         Me.starttimepicker.TabIndex = 74
         '
         'Label8

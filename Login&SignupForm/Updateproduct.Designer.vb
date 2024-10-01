@@ -45,6 +45,7 @@ Partial Class Updateproduct
         Me.Label3 = New System.Windows.Forms.Label()
         Me.Label2 = New System.Windows.Forms.Label()
         Me.topbar = New System.Windows.Forms.Panel()
+        Me.Label1 = New System.Windows.Forms.Label()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.productimage, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
@@ -83,7 +84,7 @@ Partial Class Updateproduct
         Me.pathname.AutoSize = True
         Me.pathname.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.pathname.ForeColor = System.Drawing.Color.Black
-        Me.pathname.Location = New System.Drawing.Point(676, 422)
+        Me.pathname.Location = New System.Drawing.Point(680, 422)
         Me.pathname.Name = "pathname"
         Me.pathname.Size = New System.Drawing.Size(0, 16)
         Me.pathname.TabIndex = 101
@@ -99,7 +100,6 @@ Partial Class Updateproduct
         Me.pathlbl.Size = New System.Drawing.Size(40, 16)
         Me.pathlbl.TabIndex = 100
         Me.pathlbl.Text = "Path :"
-        Me.pathlbl.Visible = False
         '
         'PictureBox1
         '
@@ -115,19 +115,23 @@ Partial Class Updateproduct
         'endtimepicker
         '
         Me.endtimepicker.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.endtimepicker.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.endtimepicker.CustomFormat = "MM/dd/yyyy hh:mm tt"
+        Me.endtimepicker.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.endtimepicker.Format = System.Windows.Forms.DateTimePickerFormat.Custom
         Me.endtimepicker.Location = New System.Drawing.Point(425, 510)
         Me.endtimepicker.Name = "endtimepicker"
-        Me.endtimepicker.Size = New System.Drawing.Size(209, 21)
+        Me.endtimepicker.Size = New System.Drawing.Size(209, 29)
         Me.endtimepicker.TabIndex = 98
         '
         'starttimepicker
         '
         Me.starttimepicker.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.starttimepicker.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.starttimepicker.CustomFormat = "MM/dd/yyyy hh:mm tt"
+        Me.starttimepicker.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.starttimepicker.Format = System.Windows.Forms.DateTimePickerFormat.Custom
         Me.starttimepicker.Location = New System.Drawing.Point(102, 510)
         Me.starttimepicker.Name = "starttimepicker"
-        Me.starttimepicker.Size = New System.Drawing.Size(209, 21)
+        Me.starttimepicker.Size = New System.Drawing.Size(209, 29)
         Me.starttimepicker.TabIndex = 97
         '
         'Label8
@@ -315,12 +319,23 @@ Partial Class Updateproduct
         Me.topbar.Size = New System.Drawing.Size(962, 54)
         Me.topbar.TabIndex = 104
         '
+        'Label1
+        '
+        Me.Label1.AutoSize = True
+        Me.Label1.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label1.ForeColor = System.Drawing.Color.Black
+        Me.Label1.Location = New System.Drawing.Point(679, 422)
+        Me.Label1.Name = "Label1"
+        Me.Label1.Size = New System.Drawing.Size(0, 16)
+        Me.Label1.TabIndex = 105
+        '
         'Updateproduct
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.White
         Me.ClientSize = New System.Drawing.Size(962, 691)
+        Me.Controls.Add(Me.Label1)
         Me.Controls.Add(Me.cancelbtn)
         Me.Controls.Add(Me.topbar)
         Me.Controls.Add(Me.clearimage)
@@ -377,4 +392,5 @@ Partial Class Updateproduct
     Friend WithEvents Label3 As Label
     Friend WithEvents Label2 As Label
     Friend WithEvents topbar As Panel
+    Friend WithEvents Label1 As Label
 End Class
