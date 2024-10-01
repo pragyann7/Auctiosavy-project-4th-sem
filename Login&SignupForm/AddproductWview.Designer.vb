@@ -27,10 +27,10 @@ Partial Class AddproductWview
         Me.flowLayoutPanelProducts = New System.Windows.Forms.FlowLayoutPanel()
         Me.searchbar = New System.Windows.Forms.Panel()
         Me.sortsearch = New System.Windows.Forms.ComboBox()
-        Me.categorysearch = New System.Windows.Forms.ComboBox()
-        Me.searchbox = New System.Windows.Forms.TextBox()
         Me.addproductbtn = New System.Windows.Forms.Button()
         Me.magnifier = New System.Windows.Forms.Button()
+        Me.categorysearch = New System.Windows.Forms.ComboBox()
+        Me.searchbox = New System.Windows.Forms.TextBox()
         Me.addproductpanel.SuspendLayout()
         Me.displayproductpanel.SuspendLayout()
         Me.searchbar.SuspendLayout()
@@ -88,26 +88,6 @@ Partial Class AddproductWview
         Me.sortsearch.Size = New System.Drawing.Size(124, 26)
         Me.sortsearch.TabIndex = 5
         '
-        'categorysearch
-        '
-        Me.categorysearch.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.categorysearch.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.categorysearch.Font = New System.Drawing.Font("Microsoft Sans Serif", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.categorysearch.FormattingEnabled = True
-        Me.categorysearch.Location = New System.Drawing.Point(246, 15)
-        Me.categorysearch.Name = "categorysearch"
-        Me.categorysearch.Size = New System.Drawing.Size(124, 26)
-        Me.categorysearch.TabIndex = 2
-        '
-        'searchbox
-        '
-        Me.searchbox.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.searchbox.Location = New System.Drawing.Point(17, 12)
-        Me.searchbox.Multiline = True
-        Me.searchbox.Name = "searchbox"
-        Me.searchbox.Size = New System.Drawing.Size(208, 29)
-        Me.searchbox.TabIndex = 0
-        '
         'addproductbtn
         '
         Me.addproductbtn.BackColor = System.Drawing.Color.AliceBlue
@@ -139,12 +119,33 @@ Partial Class AddproductWview
         Me.magnifier.TabIndex = 3
         Me.magnifier.UseVisualStyleBackColor = False
         '
+        'categorysearch
+        '
+        Me.categorysearch.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.categorysearch.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.categorysearch.Font = New System.Drawing.Font("Microsoft Sans Serif", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.categorysearch.FormattingEnabled = True
+        Me.categorysearch.Location = New System.Drawing.Point(246, 15)
+        Me.categorysearch.Name = "categorysearch"
+        Me.categorysearch.Size = New System.Drawing.Size(124, 26)
+        Me.categorysearch.TabIndex = 2
+        '
+        'searchbox
+        '
+        Me.searchbox.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.searchbox.Location = New System.Drawing.Point(17, 12)
+        Me.searchbox.Multiline = True
+        Me.searchbox.Name = "searchbox"
+        Me.searchbox.Size = New System.Drawing.Size(208, 29)
+        Me.searchbox.TabIndex = 0
+        '
         'AddproductWview
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1035, 681)
         Me.Controls.Add(Me.addproductpanel)
+        Me.DoubleBuffered = True
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None
         Me.Name = "AddproductWview"
         Me.Text = " "

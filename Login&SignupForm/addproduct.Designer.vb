@@ -368,6 +368,7 @@ Partial Class addproduct
         Me.Controls.Add(Me.Label3)
         Me.Controls.Add(Me.Label2)
         Me.Controls.Add(Me.Label1)
+        Me.DoubleBuffered = True
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None
         Me.Name = "addproduct"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen

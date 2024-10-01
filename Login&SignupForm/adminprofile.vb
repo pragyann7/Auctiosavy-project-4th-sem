@@ -5,7 +5,7 @@ Imports System.Windows.Forms.VisualStyles.VisualStyleElement
 Imports System.IO
 
 Public Class adminprofile
-    Dim connectionstring As String = "Data Source=192.168.1.69;Initial Catalog=UsersDB;User ID=SA;Password=MyStrongPass123;"
+    'Dim connectionstring As String = "Data Source=192.168.1.69;Initial Catalog=UsersDB;User ID=SA;Password=MyStrongPass123;"
 
     Private Sub adminprofile_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         showprofile()

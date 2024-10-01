@@ -2,7 +2,7 @@
 
 Public Class screensplash
     Private Sub screensplash_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        Timer1.Interval = 70
+        Timer1.Interval = 40
         Timer1.Enabled = True
         Timer2.Interval = 1000
         ProgressBar1.Visible = True

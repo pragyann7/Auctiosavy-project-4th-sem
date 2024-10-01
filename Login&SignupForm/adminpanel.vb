@@ -5,11 +5,8 @@ Imports Microsoft.Win32
 Public Class adminpanel
     Dim isfullscreen As Boolean = False
     Private resizee As resizehelper
-    Dim connectionstring As String = "Data Source=192.168.1.69;Initial Catalog=UsersDB;User ID=SA;Password=MyStrongPass123;"
-
 
     Private Sub adminpanel_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        ' Simulate a click on the addproductbtn when the form loads
         addproductbtn.PerformClick()
         showprofile()
     End Sub
@@ -18,13 +15,11 @@ Public Class adminpanel
         Using connection As New SqlConnection(connectionstring)
             connection.Open()
 
-            ' Query to fetch name and user_photo (stored as VARBINARY(MAX))
             Dim query As String = "SELECT name, user_photo FROM userdetails WHERE user_id = 108"
 
             Using command As New SqlCommand(query, connection)
                 Using reader As SqlDataReader = command.ExecuteReader()
-                    If reader.Read() Then ' Ensure there's data to read
-                        ' Display the user's name
+                    If reader.Read() Then
                         profilename.Text = reader("name").ToString()
 
                         ' Fetch and display the user's photo
@@ -196,4 +191,14 @@ Public Class adminpanel
         update.showform(adminprofile)
         navslidebtn.PerformClick()
     End Sub
+
+
+
+    Protected Overrides ReadOnly Property CreateParams() As CreateParams
+        Get
+            Dim cp As CreateParams = MyBase.CreateParams
+            cp.ExStyle = cp.ExStyle Or &H2000000
+            Return cp
+        End Get
+    End Property
 End Class

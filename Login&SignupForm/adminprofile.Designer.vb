@@ -129,6 +129,7 @@ Partial Class adminprofile
         Me.Controls.Add(Me.confirmbtn)
         Me.Controls.Add(Me.nametxtbox)
         Me.Controls.Add(Me.Label1)
+        Me.DoubleBuffered = True
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None
         Me.Name = "adminprofile"
         Me.Text = "adminprofile"

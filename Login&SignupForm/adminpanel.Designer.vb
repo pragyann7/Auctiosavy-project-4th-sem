@@ -267,6 +267,7 @@ Partial Class adminpanel
         Me.ClientSize = New System.Drawing.Size(1075, 681)
         Me.Controls.Add(Me.foraddproduct)
         Me.Controls.Add(Me.menupanel)
+        Me.DoubleBuffered = True
         Me.MinimumSize = New System.Drawing.Size(450, 39)
         Me.Name = "adminpanel"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen

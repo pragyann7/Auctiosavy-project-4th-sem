@@ -1,7 +1,7 @@
 ﻿Imports System.Data.SqlClient
 
 Module AuctionStatusManager
-    Dim connectionString As String = "Data Source=192.168.1.69;Initial Catalog=UsersDB;Persist Security Info=True;User ID=SA;Password=MyStrongPass123"
+    'Dim connectionString As String = "Data Source=192.168.1.69;Initial Catalog=UsersDB;Persist Security Info=True;User ID=SA;Password=MyStrongPass123"
 
     ' Method to update auction status based on current time
     Public Sub UpdateAuctionStatus()

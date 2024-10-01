@@ -5,7 +5,7 @@ Public Class addproduct
     'hotspot
     'Dim connectionString As String = "Data Source=192.168.140.20;Initial Catalog=UsersDB;Persist Security Info=True;User ID=SA;Password=MyStrongPass123"
 
-    Dim connectionString As String = "Data Source=192.168.1.69;Initial Catalog=UsersDB;Persist Security Info=True;User ID=SA;Password=MyStrongPass123"
+    'Dim connectionString As String = "Data Source=192.168.1.69;Initial Catalog=UsersDB;Persist Security Info=True;User ID=SA;Password=MyStrongPass123"
     Private random As New Random()
 
     Private Sub addproduct_Load(sender As Object, e As EventArgs) Handles MyBase.Load
@@ -264,9 +264,5 @@ Public Class addproduct
         If form2 IsNot Nothing Then
             form2.addproductbtn.PerformClick()
         End If
-    End Sub
-
-    Private Sub Button1_Click_1(sender As Object, e As EventArgs)
-
     End Sub
 End Class

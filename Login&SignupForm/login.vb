@@ -2,16 +2,12 @@
 Imports Microsoft.Win32
 
 Public Class Login
-    'hotspot
-    'Dim connectionstring As String = "Data Source=192.168.140.20;Initial Catalog=UsersDB;User ID=SA;Password=MyStrongPass123;"
-    Dim connectionstring As String = "Data Source=192.168.1.69;Initial Catalog=UsersDB;User ID=SA;Password=MyStrongPass123;"
     Private eemail As String
     Public Sub RememberLogin(username As String, role As String)
-        ' Store the login state in the registry
         Dim key As RegistryKey = Registry.CurrentUser.CreateSubKey("Software\MyApp")
-        key.SetValue("IsLoggedIn", True)          ' Remember that the user is logged in
-        key.SetValue("Role", role)                ' Store the role (admin or user)
-        key.SetValue("Username", username)        ' Optionally, store the username for reference
+        key.SetValue("IsLoggedIn", True)
+        key.SetValue("Role", role)
+        key.SetValue("Username", username)
         key.Close()
     End Sub
 
@@ -20,9 +16,6 @@ Public Class Login
         InitializePlaceholder()
         recqueinitializer()
         resetpassinitializer()
-        'forgotpasswordpanel.Hide()
-        'securityquestionpanel.Hide()
-        'Resetpasswordpanel.Hide()
         Timer1.Interval = 1000
         Timer1.Start()
     End Sub
@@ -189,7 +182,7 @@ Public Class Login
             ElseIf role = "user" Then
                 'userproduct.Show()
                 ''userpanel.Show()
-                Dim userPanelForm As New userproduct(username) ' Pass username to the userpanel form
+                Dim userPanelForm As New userproduct(username)
                 userPanelForm.Show()
             End If
 
@@ -199,7 +192,7 @@ Public Class Login
         End If
     End Sub
     Private Function GetUserid(username As String)
-        Using conn As New SqlConnection(connectionstring)
+        Using conn As New SqlConnection(connectionString)
             conn.Open()
 
             Dim query As String = "SELECT user_id FROM userdetails WHERE username = @username"
@@ -211,9 +204,8 @@ Public Class Login
     End Function
 
     Private Function AuthenticateUser(username As String, password As String) As Boolean
-        Using conn As New SqlConnection(connectionstring)
+        Using conn As New SqlConnection(connectionString)
             conn.Open()
-
             Dim query As String = "SELECT COUNT(1) FROM userdetails WHERE username = @username AND password = @password"
             Dim cmd As New SqlCommand(query, conn)
             cmd.Parameters.AddWithValue("@username", username)
@@ -230,8 +222,7 @@ Public Class Login
     End Function
 
     Private Function GetUserRole(username As String) As String
-        'Dim connectionstring As String = "Data Source=192.168.1.69;Initial Catalog=UsersDB;User ID=SA;Password=MyStrongPass123;"
-        Using conn As New SqlConnection(connectionstring)
+        Using conn As New SqlConnection(connectionString)
             conn.Open()
 
             Dim query As String = "SELECT role FROM userdetails WHERE username = @username"
@@ -311,7 +302,7 @@ Public Class Login
             MessageBox.Show("Please enter your email before submitting.", "Email Required", MessageBoxButtons.OK, MessageBoxIcon.Warning)
         Else
             Try
-                Using connection As New SqlConnection(connectionstring)
+                Using connection As New SqlConnection(connectionString)
                     connection.Open()
                     Dim query As String = "SELECT COUNT(*) FROM userdetails WHERE email = @email"
                     Using command As New SqlCommand(query, connection)
@@ -341,7 +332,7 @@ Public Class Login
             MessageBox.Show("Please fill in all the fields.", "Input Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
         Else
             Try
-                Using connection As New SqlConnection(connectionstring)
+                Using connection As New SqlConnection(connectionString)
                     connection.Open()
                     Dim query As String = "SELECT COUNT(*) FROM userdetails WHERE email = @email AND security1 = @Answer1 AND security2 = @Answer2 AND security3 = @Answer3"
                     Using command As New SqlCommand(query, connection)
@@ -415,7 +406,7 @@ Public Class Login
             MessageBox.Show("Passwords do not match. Please try again.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
         Else
             Try
-                Using connection As New SqlConnection(connectionstring)
+                Using connection As New SqlConnection(connectionString)
                     connection.Open()
                     Dim query As String = "UPDATE userdetails SET password = @newpassword, last_password_reset = @resetdate WHERE email = @email"
                     Using command As New SqlCommand(query, connection)

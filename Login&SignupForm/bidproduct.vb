@@ -7,7 +7,7 @@ Public Class bidproduct
     Dim CendTime As DateTime
     'hotspot
     'Dim connectionString As String = "Data Source=192.168.140.20;Initial Catalog=UsersDB;Persist Security Info=True;User ID=SA;Password=MyStrongPass123"
-    Dim connectionString As String = "Data Source=192.168.1.69;Initial Catalog=UsersDB;Persist Security Info=True;User ID=SA;Password=MyStrongPass123"
+    'Dim connectionString As String = "Data Source=192.168.1.69;Initial Catalog=UsersDB;Persist Security Info=True;User ID=SA;Password=MyStrongPass123"
     Public Sub New(id As String)
         ' Call the parameterless constructor to initialize the resizehelper
         Me.New()
