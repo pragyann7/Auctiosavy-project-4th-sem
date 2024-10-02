@@ -23,4 +23,8 @@ Public Class userpanel
     Private Sub userpanel_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
         Application.Exit()
     End Sub
+
+    Private Sub userpanel_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+
+    End Sub
 End Class

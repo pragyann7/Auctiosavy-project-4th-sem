@@ -3,7 +3,6 @@ Imports System.IO
 Imports System.Timers
 
 Public Class AddproductWview
-    'Dim connectionString As String = "Data Source=192.168.1.69;Initial Catalog=UsersDB;User ID=SA;Password=MyStrongPass123;"
     Private WithEvents productTimer As New System.Timers.Timer(5000)
     Private products As New List(Of Product)()
 

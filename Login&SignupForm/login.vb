@@ -184,6 +184,8 @@ Public Class Login
                 ''userpanel.Show()
                 Dim userPanelForm As New userproduct(username)
                 userPanelForm.Show()
+                'Dim userpanel As New userindex()
+                'userpanel.Show()
             End If
 
             Me.Hide()
